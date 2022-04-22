@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta cherset="utf-8">
+        <title>Events</title>
+        <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+        <style>
+            #container {
+                padding: 50px;
+                background-color: #FFF;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="container"></div>
+        <script type="text/babel">
+            class Counter extends React.Component {
+                render() {
+                    var textStyle = {
+                        fontSize: 72, 
+                        fontFamily: 'sans-serif',
+                        color: '#333',
+                        fontWeight: 'bold'
+                    }
+
+                    return (
+                        <div style={textStyle}>
+                            {this.props.display}    
+                        </div>
+                    )
+                }
+            }
+
+            class PlusButton extends React.Component {
+                render() {
+                    return (
+                        <button onClick={this.props.clickHandler}>
+                            +
+                        </button>
+                    )
+                }
+            }
+
+            class CounterParent extends React.Component {
+                constructor(props) {
+                    super(props)
+
+                    this.state = {
+                        count: 0
+                    }
+
+                    this.increase = this.increase.bind(this)
+                }
+
+                increase(e) {
+                    console.log(this)
+
+                    var currentCount = this.state.count
+
+                    if (e.shiftKey) {
+                        currentCount += 10
+                    } else {
+                        currentCount += 1
+                    }
+
+                    this.setState({
+                        count: currentCount
+                    })
+                }
+
+                render() {
+                    var backgroundStyle = {
+                        padding: 50,
+                        backgroundColor: '#FFC53A',
+                        width: 250,
+                        height: 100,
+                        borderRadius: 10,
+                        textAlign: 'center'
+                    }
+
+                    var buttonStyle = {
+                        fontSize: '1em',
+                        width: 30,
+                        height: 30,
+                        fontFamily: 'sans-serif',
+                        color: '#333',
+                        fontWeight: 'bold',
+                        lineHeight: '3px'
+                    }
+
+                    return (
+                        <div style={backgroundStyle}>
+                            <Counter display={this.state.count} />
+                            <button onClick={this.increase} style={buttonStyle}>+</button>
+                            {/* 아래와 같이 사용할 수 없음 - 컴포넌트의 이벤트는 직접 리스닝할 수 없기 때문 */}
+                            <PlusButton onClick={this.increase} />
+                            {/* 아래와 같이 사용하기! */}
+                            <PlusButton clickHandler={this.increase} />
+                        </div>
+                    )
+                }
+            }
+
+            // 일반 DOM 이벤트의 리스닝
+            class Something extends React.Component {
+                handleMyEvent(e) {
+                    // 이벤트 처리
+                    alert('이벤트 리스닝하기')
+                }
+
+                componentDidMount() {
+                    window.addEventListener('someEvent', this.handleMyEvent) // ex. someEvent = click
+                }
+
+                componentWillUnmount() {
+                    window.removeEventListener('someEvent', this.handleMyEvent) // 소멸할 때 꼭 제거해주기
+                }
+
+                render() {
+                    return (
+                        <div>
+                            {/* 아래와 같이 사용할 수 없음 */}
+                            <div onSomeEvent={this.handleMyEvent}>Hello!</div>
+                            <div>Hello!</div>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(
+                <div>
+                    <CounterParent />
+                    <Something />
+                </div>,
+                document.querySelector('#container')
+            )
+        </script>
+    </body>
+
+</html>
