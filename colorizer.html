@@ -8,6 +8,13 @@
         <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
         <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
         <style>
+            #colorHeading {
+                padding: 0;
+                margin: 50px;
+                margin-bottom: -20px;
+                font-family: sans-serif;
+            }
+
             #container {
                 padding: 50px;
                 background-color: #FFF;
@@ -44,6 +51,8 @@
     </head>
 
     <body>
+        <h1 id="colorHeading">Colorizer</h1>
+
         <div id="container"></div>
         <script type="text/babel">
             class Colorizer extends React.Component {
@@ -70,6 +79,7 @@
                         bgColor: this.state.color
                     })
 
+                    // this.refs.heading = this._input.value 이게 아니야
                     this._input.focus()
                     this._input.value = ''
 
@@ -90,15 +100,29 @@
                             <form onSubmit={this.setNewColor}>
                                 <input onChange={this.colorValue} 
                                        ref={
-                                           function(el) {
-                                               self._input= el
-                                           }
+                                        //    function(el) {
+                                        //        self._input= el
+                                        //    }
+                                        // ES6의 화살표 함수를 활용하기
+                                        (el) => this._input = el
                                        } 
                                        placeholder="Enter a color value">
                                 </input>
                                 <button type="submit">go</button>
                             </form>
+                            <ColorLabel color={this.state.bgColor} />
                         </div>
+                    )
+                }
+            }
+
+            var heading = document.querySelector('#colorHeading')
+
+            class ColorLabel extends React.Component {
+                render() {
+                    return ReactDOM.createPortal(
+                        ': ' + this.props.color,
+                        heading
                     )
                 }
             }
