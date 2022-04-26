@@ -11,6 +11,7 @@ class TodoList extends Component {
         }
 
         this.addItem = this.addItem.bind(this)
+        this.deleteItem = this.deleteItem.bind(this)
     }
 
     addItem(e) {
@@ -47,6 +48,16 @@ class TodoList extends Component {
         e.preventDefault() // 이벤트의 기본 동작을 막는다. 사용자가 폼을 제출하면 기본적으로 페이지는 다시 로딩되며 모든 사항이 초기화된다. 그것을 막기 위함!
     }
 
+    deleteItem(key) {
+        var filteredItems = this.state.items.filter(function(item) {
+            return (item.key !== key)
+        })
+
+        this.setState({
+            items: filteredItems
+        })
+    }
+
     render() {
         return  (
             <div className="todoListMain">
@@ -58,7 +69,8 @@ class TodoList extends Component {
                         <button type="submit">add</button>
                     </form>
                 </div>
-                <TodoItems entries={this.state.items}/>
+                <TodoItems entries={this.state.items}
+                           delete={this.deleteItem}/>
             </div>
         )
     }
