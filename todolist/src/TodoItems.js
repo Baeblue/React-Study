@@ -8,7 +8,7 @@ class TodoItems extends Component {
     }
 
     delete(key) {
-        this.props.delete(key) // 
+        this.props.delete(key) // TodoList로 연결
     }
 
     createTasks(item) {
