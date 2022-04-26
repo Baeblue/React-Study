@@ -3,6 +3,7 @@ import './Menu.css'
 
 class Menu extends Component {
     render() {
+        console.log('Rendering: Menu')
         var visibility = 'hide'
 
         if (this.props.menuVisibility) {
@@ -11,7 +12,7 @@ class Menu extends Component {
 
         return (
             <div id="flyoutMenu"
-                 onMouseDown={this.props.handelMouseDown}
+                 onMouseDown={this.props.handleMouseDown}
                  className={visibility}>
                 <h2><a href="/">Home</a></h2>
                 <h2><a href="/">About</a></h2>
