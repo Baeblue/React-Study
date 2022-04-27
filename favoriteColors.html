@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Favorite Colors!</title>
+    <script src="https://unpkg.com/redux@latest/dist/redux.js"></script>
+</head>
+
+<body>
+    <script>
+        function addColor(value) { // 액션 생성자
+            return {
+                type: 'ADD',
+                color: value
+            }
+        }
+
+        function removeColor(value) {
+            return {
+                type: 'REMOVE',
+                color: value
+            }
+        }
+
+        function favoriteColors(state, action) { // 리듀서
+            if (state === undefined) {
+                state = []
+            }
+
+            if (action.type === 'ADD') {
+                return state.concat(action.color) // 상태 변경 X
+            } else if (action.type === 'REMOVE') {
+                return state.filter(function(item) { // 상태 변경 X
+                    return item !== action.color
+                })
+            } else {
+                return state
+            }
+        }
+
+        var store = Redux.createStore(favoriteColors) // 스토어 생성
+        store.subscribe(render) // 상태 변경 감지
+
+        function render() { // 리스너
+            console.log(store.getState())
+        }
+
+        store.dispatch(addColor('blue')) // 액션 호출
+        store.dispatch(addColor('yellow'))
+        store.dispatch(addColor('green'))
+        store.dispatch(addColor('red'))
+        store.dispatch(addColor('gray'))
+        store.dispatch(addColor('orange'))
+        store.dispatch(removeColor('gray'))
+
+        console.log(store.getState()) // 현재 상태 읽기
+    </script>
+</body>
+
+</html>
