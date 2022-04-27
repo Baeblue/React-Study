@@ -22,7 +22,7 @@ class Main extends Component {
                     </ul>
                     <div className="content">
                         <Routes>
-                            <Route path="/" element={<Home/>}/>
+                            <Route path="/" element={<Home/>}/> {/* exact 옵션 삭제됨_기본적으로 url값이 정확히 일치하도록 변경됨 */}
                             <Route path="/stuff" element={<Stuff/>}/>
                             <Route path="/contact" element={<Contact/>}/>
                         </Routes>
